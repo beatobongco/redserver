@@ -27,8 +27,8 @@ class User(db.Model):
 def hello():
   if request.method == 'POST':
     app.logger.debug("!")
-    android_id = request.form.get('android_id')
-    time_sent = request.form.get('time_sent')
+    android_id = request.form['android_id']
+    time_sent = request.form['time_sent']
 
     #Add to db
     newdata = User(android_id, time_sent)
