@@ -45,7 +45,7 @@ def hello():
 
     return rv# render_template('userlist', users=users)
 
-  return ""
+  return "Hello!"
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
