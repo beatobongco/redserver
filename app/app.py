@@ -7,11 +7,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/redserver.db'
 
 db = SQLAlchemy(app)
 
+def now():
+    return arrow.now().timestamp
+
 class User(db.Model):
   # A user
-
-  def now():
-    return arrow.now().timestamp
 
   android_id = db.Column(db.String(255), primary_key=True)
   time_sent = db.Column(db.Integer)
@@ -28,7 +28,7 @@ def hello():
   if request.method == 'POST':
     app.logger.debug("!")
     android_id = request.form['android_id']
-    time_sent = request.form['time_sent']
+    time_sent = now()
 
     #Add to db
     newdata = User(android_id, time_sent)
