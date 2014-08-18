@@ -16,7 +16,7 @@ class User(db.Model):
   android_id = db.Column(db.String(255), primary_key=True)
   time_sent = db.Column(db.Integer)
 
-  def __init__(self, google_id, stripe_id):
+  def __init__(self, android_id, time_sent):
     self.android_id = android_id
     self.time_sent = time_sent
 
@@ -43,7 +43,7 @@ def hello():
 
     rv = ""
     for user in users:
-      rv = rv + "android_id: " + user.android_id + " | time_sent: " + user.time_sent + "<br>"
+      rv = rv + "android_id: " + str(user.android_id) + " | time_sent: " + str(user.time_sent) + "<br>"
 
     return rv# render_template('userlist', users=users)
 
