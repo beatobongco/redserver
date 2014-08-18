@@ -26,8 +26,9 @@ class User(db.Model):
 @app.route("/", methods=['GET', 'POST'])
 def hello():
   if request.method == 'POST':
-    android_id = request.args.get('android_id')
-    time_sent = request.args.get('time_sent')
+    app.logger.debug("!")
+    android_id = request.form.get('android_id')
+    time_sent = request.form.get('time_sent')
 
     #Add to db
     newdata = User(android_id, time_sent)
@@ -36,6 +37,7 @@ def hello():
     db.session.commit()
 
   else:
+    app.logger.debug("x")
     #show all the users
     users = User.query.all()
 
