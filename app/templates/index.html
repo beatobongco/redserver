@@ -9,6 +9,7 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/datepicker3.css') }}">
 </head>
 <body>
+  <div class="content">
   <img class="logo" src="{{ url_for('static', filename='img/redserver.png') }}">
   <h1>Welcome to RedServer!</h1>
   <br><br>
@@ -22,18 +23,21 @@
     <button type="button" class="btn btn-default filterbtn">Filter</button>
     <button type="button" class="showall btn btn-default">Show all entries</button>
     <br><br>
-    <button type="button" class="sort btn btn-default" data-sort="time_sent">Sort by date</button>
+    <button type="button" class="sort btn btn-default" data-sort="time_sent">Sort by time sent</button>
     <br><br>
+    <div class="colname">Android ID</div>
+    <div class="colname">Time Sent</div>
     <ul class="list">
 
       {% for user in users %}
         <li>
-          <p class="android_id">{{ user.android_id }}</p>
-          <p class="time_sent">{{ user.time_sent}}</p>
+          <div class="android_id">{{ user.android_id }}</div>
+          <div class="time_sent">{{ user.time_sent}}</div>
         </li>
       {% endfor %}
     </ul>
     <ul class="pagination"></ul>
+  </div>
   </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
