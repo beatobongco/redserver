@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to RedServer</title>
+  <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/datepicker3.css') }}">
+</head>
+<body>
+  <img class="logo" src="{{ url_for('static', filename='img/redserver.png') }}">
+  <h1>Welcome to RedServer!</h1>
+  <br><br>
+  <div class="counts"></div>
+  <br>
+  <div id="users">
+    <span class="ctext">Filter dates from:</span> 
+    <input type="text" class="form-control dpfrom limit">
+    to
+    <input type="text" class="form-control dpto limit">
+    <button type="button" class="btn btn-default filterbtn">Filter</button>
+    <button type="button" class="showall btn btn-default">Show all entries</button>
+    <br><br>
+    <button type="button" class="sort btn btn-default" data-sort="time_sent">Sort by date</button>
+    <br><br>
+    <ul class="list">
+
+      {% for user in users %}
+        <li>
+          <p class="android_id">{{ user.android_id }}</p>
+          <p class="time_sent">{{ user.time_sent}}</p>
+        </li>
+      {% endfor %}
+    </ul>
+    <ul class="pagination"></ul>
+  </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.pagination.js/0.1.0/list.pagination.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.1/moment.min.js"></script> -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('.dpfrom').datepicker({
+    format: 'yyyy/mm/dd'
+  });
+
+  $('.dpto').datepicker({
+    format: 'yyyy/mm/dd'
+  });
+
+  var options = {
+    valueNames: [ 'android_id', 'time_sent' ]
+  };
+
+  var userList = new List('users', options);
+
+  $('.filterbtn').click(function() {
+    userList.filter(function(item){
+    var to_check = "";
+    if(($('.dpto').val()) && ($('.dpfrom').val())) {
+      to_check = (item.values().time_sent.split(' ')[0] >= $('.dpfrom').val()) && (item.values().time_sent.split(' ')[0] <= $('.dpto').val());
+    }
+    else if ($('.dpfrom').val()) {
+      to_check = (item.values().time_sent.split(' ')[0] >= $('.dpfrom').val());
+    }
+    else if ($('.dpto').val()){
+      to_check = (item.values().time_sent.split(' ')[0] <= $('.dpto').val());
+    }
+    
+    if(to_check) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  });
+    $('.counts').html("Count: " + userList.visibleItems.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  });
+
+  $('.showall').click(function() {
+    userList.filter();
+  });
+
+  $('.counts').html("Count: " + userList.visibleItems.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+  });
+</script>
+</body>
+</html>

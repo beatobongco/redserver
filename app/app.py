@@ -1,6 +1,6 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
-import arrow #human readable time
+import arrow, datetime #human readable time
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/redserver.db'
@@ -12,7 +12,6 @@ def now():
 
 class User(db.Model):
   # A user
-
   android_id = db.Column(db.String(255), primary_key=True)
   time_sent = db.Column(db.Integer)
 
@@ -38,16 +37,32 @@ def hello():
 
   else:
     app.logger.debug("x")
-    #show all the users
+
+    #ask for a simple password here 
+
+    #show all the users + count
     users = User.query.all()
 
-    rv = ""
+    # rv = ""
+    # for user in users:
+    #   rv = rv + "android_id: " + str(user.android_id) + " | time_sent: " + str(user.time_sent) + "<br>"
+    users_formatted = []
     for user in users:
-      rv = rv + "android_id: " + str(user.android_id) + " | time_sent: " + str(user.time_sent) + "<br>"
+      users_formatted.append({'android_id' : user.android_id, 'time_sent' : datetime.datetime.fromtimestamp(user.time_sent).strftime('%Y/%m/%d %H:%M:%S')})
 
-    return rv# render_template('userlist', users=users)
+    app.logger.debug(users_formatted)
+    return render_template('index.html', users=users_formatted)
 
   return "Hello!"
+
+@app.route('/d')
+def d():
+  d = User.query.all()
+  for x in d:
+    db.session.delete(x)
+  db.session.commit()
+ 
+  return "Deleted all users in sample db"
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
