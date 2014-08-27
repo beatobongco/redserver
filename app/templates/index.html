@@ -23,7 +23,7 @@
     <button type="button" class="btn btn-default filterbtn">Filter</button>
     <button type="button" class="showall btn btn-default">Show all entries</button>
     <br><br>
-    <span class="filtered_by"></span>
+    <span class="filtered_by">Showing all entries</span>
     <button type="button" class="sort btn btn-default" data-sort="time_sent">Sort by time sent</button>
     <br><br>
     <div class="colname">Android ID</div>
@@ -93,6 +93,7 @@ $(document).ready(function() {
     userList.filter();
     $('.dpfrom').val('');
     $('.dpto').val('');
+    $('.filtered_by').html("Showing all entries")
   });
 
   $('.counts').html("Count: " + userList.visibleItems.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
