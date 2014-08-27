@@ -1,6 +1,7 @@
 from flask import Flask, request, Response, render_template, url_for
 from functools import wraps
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 import arrow, datetime #human readable time
 import config
 
@@ -62,16 +63,18 @@ def index():
 
 @app.route('/receive', methods=['POST'])
 def receive(): 
+  try:
+    android_id = request.form['android_id']
+    time_sent = now()
 
-  android_id = request.form['android_id']
-  time_sent = now()
+    #Add to db
+    newdata = User(android_id, time_sent)
 
-  #Add to db
-  newdata = User(android_id, time_sent)
-
-  db.session.add(newdata)
-  db.session.commit()
-  return "Receiving..."
+    db.session.add(newdata)
+    db.session.commit()
+  except IntegrityError:
+    return "Already exists"
+  return "Received"
 
 @app.route('/d')
 def d():

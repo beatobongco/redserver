@@ -23,6 +23,7 @@
     <button type="button" class="btn btn-default filterbtn">Filter</button>
     <button type="button" class="showall btn btn-default">Show all entries</button>
     <br><br>
+    <span class="filtered_by"></span>
     <button type="button" class="sort btn btn-default" data-sort="time_sent">Sort by time sent</button>
     <br><br>
     <div class="colname">Android ID</div>
@@ -48,7 +49,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-  $('.dpfrom').datepicker({
+  var dpfrom = $('.dpfrom').datepicker({
     format: 'yyyy/mm/dd'
   });
 
@@ -67,12 +68,15 @@ $(document).ready(function() {
     var to_check = "";
     if(($('.dpto').val()) && ($('.dpfrom').val())) {
       to_check = (item.values().time_sent.split(' ')[0] >= $('.dpfrom').val()) && (item.values().time_sent.split(' ')[0] <= $('.dpto').val());
+      $('.filtered_by').html("Showing entries from " + $('.dpfrom').val() + " and " + $('.dpto').val());
     }
     else if ($('.dpfrom').val()) {
       to_check = (item.values().time_sent.split(' ')[0] >= $('.dpfrom').val());
+      $('.filtered_by').html("Showing entries starting from " + $('.dpfrom').val());
     }
     else if ($('.dpto').val()){
       to_check = (item.values().time_sent.split(' ')[0] <= $('.dpto').val());
+      $('.filtered_by').html("Showing entries before " + $('.dpto').val());
     }
     
     if(to_check) {
@@ -87,6 +91,8 @@ $(document).ready(function() {
 
   $('.showall').click(function() {
     userList.filter();
+    $('.dpfrom').val('');
+    $('.dpto').val('');
   });
 
   $('.counts').html("Count: " + userList.visibleItems.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
