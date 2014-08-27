@@ -78,7 +78,11 @@ $(document).ready(function() {
       to_check = (item.values().time_sent.split(' ')[0] <= $('.dpto').val());
       $('.filtered_by').html("Showing entries before " + $('.dpto').val());
     }
-    
+    else {
+      to_check = true;
+      $('.filtered_by').html("Showing all entries");
+    }
+
     if(to_check) {
       return true;
     }
