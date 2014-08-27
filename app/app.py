@@ -76,14 +76,14 @@ def receive():
     return "Already exists"
   return "Received"
 
-@app.route('/d')
-def d():
-  d = User.query.all()
-  for x in d:
-    db.session.delete(x)
-  db.session.commit()
+# @app.route('/d')
+# def d():
+#   d = User.query.all()
+#   for x in d:
+#     db.session.delete(x)
+#   db.session.commit()
  
-  return "Deleted all users in sample db"
+#   return "Deleted all users in sample db"
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host='0.0.0.0')
